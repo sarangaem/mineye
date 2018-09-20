@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'development',
   context: __dirname,
   entry: './pages/home.jsx',
   output: {
@@ -6,7 +7,7 @@ module.exports = {
     filename: 'all.js'
   },
   module: {
-    loaders: [
+    rules: [
       {test: /\.jsx$/, loader: 'jsx-loader'},
       {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
       {test: /bower_components\.*\.js$/, loader: "script-loader"}

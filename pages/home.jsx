@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 /*NPM includes*/
 var _ = require('lodash');
-var $ = require('jQuery');
+var $ = require('jquery');
 
 /*React includes*/
 var React = require("react/addons");
