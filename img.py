@@ -2,7 +2,6 @@ import cv2
 import numpy
 import sqlite3
 import pickle
-import operator
 from datetime import datetime
 
 
@@ -23,11 +22,12 @@ def get_surf_des(filename):
     kp = fast.detect(f,None)
 
     kp, des = surf.compute(f, kp, None)
-    print(instance(des))
+    print(des)
+    des = numpy.float32(des)
     return kp, des
 
 def get_conn():
-    return sqlite3.connect('bank08.db')
+    return sqlite3.connect('bank.db')
 
 class _img:
     def __init__(self):
@@ -38,7 +38,7 @@ class _img:
         self.flann = cv2.FlannBasedMatcher(index_params,dict())
 
     def add_image(self, filename, des=None):
-        if des.size == 0:
+        if des is None:
             kv, des = get_surf_des(filename)
         self.imap.append({
             'index_start' : self.r,
@@ -121,13 +121,13 @@ class persisted_img(img):
                 filename = row[0]
                 des = pickle.loads(str(row[1]))
                 print 'img.__init__: loading descriptor for file %s from db' % (filename)
-                if des.size == 0:
+                if des is None:
                     print 'img.__init__: error loading descriptor for %s from db' % (filename)
                     continue
                 self.add_image(filename, des=des)
 
     def add_image(self, filename, des=None):
-        if des.size == 0:
+        if des is None:
             kv, des = get_surf_des(filename)
             with get_conn() as conn:
                 c = conn.cursor()
